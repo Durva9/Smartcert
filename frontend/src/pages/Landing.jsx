@@ -1,30 +1,51 @@
 import { Link } from 'react-router-dom'
+import { useTheme } from '../useTheme'
 
 function Landing() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-2">SmartCert</h1>
-        <p className="text-gray-600 mb-8">Soulbound academic credentials on Ethereum</p>
+  const [isDark, setIsDark] = useTheme()
 
-        <div className="flex gap-4 justify-center">
+  return (
+    <div
+      className="min-h-screen flex items-center justify-center px-6"
+      style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}
+    >
+      <button
+        onClick={() => setIsDark(!isDark)}
+        className="fixed top-5 right-5 w-9 h-9 rounded-full flex items-center justify-center glow-border"
+      >
+        {isDark ? '☀️' : '🌙'}
+      </button>
+
+      <div className="text-center max-w-xl">
+        <p
+          className="text-xs tracking-widest uppercase mb-3"
+          style={{ color: 'var(--accent)' }}
+        >
+          Blockchain-Verified Credentials
+        </p>
+        <h1 className="font-display text-5xl font-bold mb-3">SmartCert</h1>
+        <p className="text-muted mb-10">
+          Soulbound academic credentials on Ethereum
+        </p>
+
+        <div className="grid sm:grid-cols-3 gap-4">
           <Link
             to="/issuer"
-            className="bg-blue-600 text-white px-6 py-4 rounded-lg shadow hover:bg-blue-700 w-40"
+            className="card glow-border p-6 font-display font-semibold transition"
           >
-            Issuer
+            🏛️ Issuer
           </Link>
           <Link
             to="/student"
-            className="bg-green-600 text-white px-6 py-4 rounded-lg shadow hover:bg-green-700 w-40"
+            className="card glow-border p-6 font-display font-semibold transition"
           >
-            Student
+            🎓 Student
           </Link>
           <Link
             to="/verifier"
-            className="bg-purple-600 text-white px-6 py-4 rounded-lg shadow hover:bg-purple-700 w-40"
+            className="card glow-border p-6 font-display font-semibold transition"
           >
-            Verifier
+            🔍 Verifier
           </Link>
         </div>
       </div>

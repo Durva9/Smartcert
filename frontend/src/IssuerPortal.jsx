@@ -101,15 +101,15 @@ function IssuerPortal() {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Issue Certificate</h2>
+    <div className="max-w-md mx-auto card p-6 shadow-md" style={{ color: 'var(--text)' }}>
+      <h2 className="font-display text-xl font-bold mb-4">Issue Certificate</h2>
       <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="text"
           placeholder="Student Wallet Address (0x...)"
           value={studentAddress}
           onChange={(e) => setStudentAddress(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full input-field px-3 py-2"
           required
         />
         <input
@@ -117,7 +117,7 @@ function IssuerPortal() {
           placeholder="Student Full Name"
           value={studentName}
           onChange={(e) => setStudentName(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full input-field px-3 py-2"
           required
         />
         <input
@@ -125,14 +125,14 @@ function IssuerPortal() {
           placeholder="Course Title"
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full input-field px-3 py-2"
           required
         />
         <input
           type="date"
           value={issueDate}
           onChange={(e) => setIssueDate(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full input-field px-3 py-2"
           required
         />
         <button
@@ -144,25 +144,25 @@ function IssuerPortal() {
         </button>
       </form>
 
-      {status && <p className="mt-3 text-sm text-gray-600">{status}</p>}
+      {status && <p className="mt-3 text-sm text-muted">{status}</p>}
       {isSuccess && (
-        <div className="mt-3 text-sm text-green-600">
+        <div className="mt-3 text-sm text-green-500">
           <p>✅ Certificate issued! Tx: {hash}</p>
         </div>
       )}
 
-      <hr className="my-6" />
+      <hr className="my-6" style={{ borderColor: 'var(--border)' }} />
 
-      <h2 className="text-xl font-bold mb-4">Batch Issue (CSV)</h2>
+      <h2 className="font-display text-xl font-bold mb-4">Batch Issue (CSV)</h2>
       <form onSubmit={handleBatchSubmit} className="space-y-3">
         <input
           type="file"
           accept=".csv"
           onChange={(e) => setCsvFile(e.target.files[0])}
-          className="w-full border rounded px-3 py-2"
+          className="w-full input-field px-3 py-2"
           required
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted">
           Columns: wallet, name, course, issue_date
         </p>
         <button
@@ -174,10 +174,10 @@ function IssuerPortal() {
         </button>
       </form>
 
-      {batchStatus && <p className="mt-3 text-sm text-gray-600">{batchStatus}</p>}
+      {batchStatus && <p className="mt-3 text-sm text-muted">{batchStatus}</p>}
 
       {writeError && (
-        <p className="mt-3 text-sm text-red-600 break-words">
+        <p className="mt-3 text-sm text-red-500 break-words">
           Error: {writeError.message}
         </p>
       )}

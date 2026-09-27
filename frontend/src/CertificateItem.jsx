@@ -15,18 +15,22 @@ function CertificateItem({ cert, tokenId, onViewEtherscan }) {
   }
 
   return (
-    <div className="border-t-4 border-blue-600 rounded-lg shadow p-4">
-      <p className="text-xs text-gray-400 mb-1">Token ID #{tokenId}</p>
-      <h3 className="font-bold text-lg">{cert.courseName}</h3>
-      <p className="text-sm text-gray-600">
-        Awarded to <span className="font-medium">{cert.studentName}</span>
+    <div
+      className="rounded-lg p-4"
+      style={{ borderTop: '4px solid var(--accent)', border: '1px solid var(--border)', borderTopWidth: '4px', backgroundColor: 'var(--bg)' }}
+    >
+      <p className="text-xs text-muted mb-1">Token ID #{tokenId}</p>
+      <h3 className="font-display font-bold text-lg">{cert.courseName}</h3>
+      <p className="text-sm text-muted">
+        Awarded to <span className="font-medium" style={{ color: 'var(--text)' }}>{cert.studentName}</span>
       </p>
-      <p className="text-sm text-gray-600">Issued: {cert.issueDate}</p>
+      <p className="text-sm text-muted">Issued: {cert.issueDate}</p>
 
       <div className="flex flex-wrap gap-2 mt-2">
         <button
           onClick={onViewEtherscan}
-          className="text-xs text-blue-600 underline bg-transparent border-none cursor-pointer p-0"
+          className="text-xs underline bg-transparent border-none cursor-pointer p-0"
+          style={{ color: 'var(--accent)' }}
         >
           View on Etherscan
         </button>

@@ -68,10 +68,10 @@ function VerifierPage() {
 
   return (
     <Layout showWallet={false}>
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-bold mb-2">Verify a Certificate</h2>
-          <p className="text-sm text-gray-500 mb-4">
+      <div className="max-w-2xl mx-auto" style={{ color: 'var(--text)' }}>
+        <div className="card p-6 mb-6">
+          <h2 className="font-display text-xl font-bold mb-2">Verify a Certificate</h2>
+          <p className="text-sm text-muted mb-4">
             Enter a student's wallet address to see their verified SmartCert credentials.
             No wallet connection or fee required.
           </p>
@@ -81,7 +81,7 @@ function VerifierPage() {
               placeholder="Wallet address (0x...)"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              className="flex-1 border rounded px-3 py-2 font-mono text-sm"
+              className="flex-1 input-field px-3 py-2 font-mono text-sm"
             />
             <button
               type="submit"
@@ -93,26 +93,29 @@ function VerifierPage() {
         </div>
 
         {hasSearched && !isValidAddress && (
-          <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center">
+          <div className="card p-4 text-center" style={{ borderColor: '#ef4444', color: '#f87171' }}>
             ❌ That doesn't look like a valid wallet address.
           </div>
         )}
 
         {hasSearched && isValidAddress && loading && (
-          <div className="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">
+          <div className="card p-6 text-center text-muted">
             Checking blockchain records...
           </div>
         )}
 
         {hasSearched && isValidAddress && !loading && ownedTokenIds.length === 0 && (
-          <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded-lg text-center">
+          <div className="card p-4 text-center" style={{ borderColor: '#eab308', color: '#facc15' }}>
             ⚠️ UNVERIFIED — No SmartCert certificates found for this address.
           </div>
         )}
 
         {hasSearched && isValidAddress && !loading && ownedTokenIds.length > 0 && (
           <div>
-            <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg text-center mb-4 font-semibold">
+            <div
+              className="card p-4 text-center mb-4 font-semibold"
+              style={{ borderColor: '#22c55e', color: '#4ade80' }}
+            >
               ✅ VERIFIED & AUTHENTIC — {ownedTokenIds.length} certificate(s) found
             </div>
 
@@ -124,17 +127,19 @@ function VerifierPage() {
                 return (
                   <div
                     key={tokenId}
-                    className="bg-white border-t-4 border-green-600 rounded-lg shadow p-4"
+                    className="card p-4"
+                    style={{ borderTop: '4px solid #22c55e' }}
                   >
-                    <p className="text-xs text-gray-400 mb-1">Token ID #{tokenId}</p>
-                    <h3 className="font-bold text-lg">{cert.courseName}</h3>
-                    <p className="text-sm text-gray-600">
-                      Awarded to <span className="font-medium">{cert.studentName}</span>
+                    <p className="text-xs text-muted mb-1">Token ID #{tokenId}</p>
+                    <h3 className="font-display font-bold text-lg">{cert.courseName}</h3>
+                    <p className="text-sm text-muted">
+                      Awarded to <span className="font-medium" style={{ color: 'var(--text)' }}>{cert.studentName}</span>
                     </p>
-                    <p className="text-sm text-gray-600">Issued: {cert.issueDate}</p>
+                    <p className="text-sm text-muted">Issued: {cert.issueDate}</p>
                     <button
                       onClick={() => openOnEtherscan(tokenId)}
-                      className="text-xs text-blue-600 underline mt-2 inline-block bg-transparent border-none cursor-pointer p-0"
+                      className="text-xs underline mt-2 inline-block bg-transparent border-none cursor-pointer p-0"
+                      style={{ color: 'var(--accent)' }}
                     >
                       View on Etherscan
                     </button>
