@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAccount, useReadContracts, useReadContract } from 'wagmi'
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from './contract'
+import CertificateItem from './CertificateItem'
 
 const MAX_TOKEN_ID_TO_CHECK = 50 // adjust upward later if you issue more certificates
 
@@ -114,23 +115,12 @@ function StudentPortal() {
           if (!cert) return null
           const tokenId = ownedTokenIds[i]
           return (
-            <div
+            <CertificateItem
               key={tokenId}
-              className="border-t-4 border-blue-600 rounded-lg shadow p-4"
-            >
-              <p className="text-xs text-gray-400 mb-1">Token ID #{tokenId}</p>
-              <h3 className="font-bold text-lg">{cert.courseName}</h3>
-              <p className="text-sm text-gray-600">
-                Awarded to <span className="font-medium">{cert.studentName}</span>
-              </p>
-              <p className="text-sm text-gray-600">Issued: {cert.issueDate}</p>
-              <button
-                onClick={() => openOnEtherscan(tokenId)}
-                className="text-xs text-blue-600 underline mt-2 inline-block bg-transparent border-none cursor-pointer p-0"
-              >
-                View on Etherscan
-              </button>
-            </div>
+              cert={cert}
+              tokenId={tokenId}
+              onViewEtherscan={() => openOnEtherscan(tokenId)}
+            />
           )
         })}
       </div>
