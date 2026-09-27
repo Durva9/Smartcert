@@ -54,11 +54,11 @@ function IssuerPortal() {
     setBatchStatus('Reading CSV...')
 
     Papa.parse(csvFile, {
-  header: true,
-  skipEmptyLines: true,
-  transformHeader: (header) => header.trim().replace(/^\uFEFF/, ''),
-  complete: async (results) => {
-    console.log('Parsed CSV rows:', results.data)
+      header: true,
+      skipEmptyLines: true,
+      transformHeader: (header) => header.trim().replace(/^\uFEFF/, ''),
+      complete: async (results) => {
+        console.log('Parsed CSV rows:', results.data)
         try {
           const rows = results.data
           setBatchStatus(`Uploading ${rows.length} metadata files to IPFS...`)
@@ -146,9 +146,9 @@ function IssuerPortal() {
 
       {status && <p className="mt-3 text-sm text-gray-600">{status}</p>}
       {isSuccess && (
-        <p className="mt-3 text-sm text-green-600">
-          ✅ Certificate issued! Tx: {hash}
-        </p>
+        <div className="mt-3 text-sm text-green-600">
+          <p>✅ Certificate issued! Tx: {hash}</p>
+        </div>
       )}
 
       <hr className="my-6" />
@@ -175,11 +175,12 @@ function IssuerPortal() {
       </form>
 
       {batchStatus && <p className="mt-3 text-sm text-gray-600">{batchStatus}</p>}
+
       {writeError && (
-  <p className="mt-3 text-sm text-red-600 break-words">
-    Error: {writeError.message}
-  </p>
-)}
+        <p className="mt-3 text-sm text-red-600 break-words">
+          Error: {writeError.message}
+        </p>
+      )}
     </div>
   )
 }

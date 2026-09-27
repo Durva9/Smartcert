@@ -5,7 +5,6 @@ const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helper
 describe("SmartCert", function () {
   const URI = "ipfs://bafyExampleCID";
 
-  // Runs once, then every test starts from a fresh copy of this state
   async function deployFixture() {
     const [owner, student, student2, other] = await ethers.getSigners();
     const smartCert = await ethers.deployContract("SmartCert", [owner.address]);
@@ -32,8 +31,8 @@ describe("SmartCert", function () {
 
     it("supports ERC-5192 and ERC-721 via EIP-165", async function () {
       const { smartCert } = await loadFixture(deployFixture);
-      expect(await smartCert.supportsInterface("0xb45a3c0e")).to.equal(true); // ERC-5192
-      expect(await smartCert.supportsInterface("0x80ac58cd")).to.equal(true); // ERC-721
+      expect(await smartCert.supportsInterface("0xb45a3c0e")).to.equal(true);
+      expect(await smartCert.supportsInterface("0x80ac58cd")).to.equal(true);
     });
   });
 
