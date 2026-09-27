@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import html2canvas from 'html2canvas'
 import CertificateCard from './CertificateCard'
+import { generateCertificatePDF } from './pdfCert'
 
 function CertificateItem({ cert, tokenId, onViewEtherscan }) {
   const cardRef = useRef(null)
@@ -12,6 +13,10 @@ function CertificateItem({ cert, tokenId, onViewEtherscan }) {
     link.download = `SmartCert-${cert.studentName.replace(/\s+/g, '_')}.png`
     link.href = canvas.toDataURL('image/png')
     link.click()
+  }
+
+  async function handleDownloadPDF() {
+    await generateCertificatePDF(cert, tokenId)
   }
 
   return (
@@ -38,7 +43,13 @@ function CertificateItem({ cert, tokenId, onViewEtherscan }) {
           onClick={handleDownload}
           className="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded hover:bg-indigo-700"
         >
-          Download Certificate
+          Download PNG
+        </button>
+        <button
+          onClick={handleDownloadPDF}
+          className="text-xs bg-teal-600 text-white px-3 py-1.5 rounded hover:bg-teal-700"
+        >
+          Download PDF
         </button>
       </div>
 

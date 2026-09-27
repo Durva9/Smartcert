@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useReadContracts } from 'wagmi'
+import { readContract } from 'wagmi/actions'
 import Layout from '../Layout'
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../contract'
+import { config } from '../wagmi'
+import { verifyCertPDF, parseCertPDF } from '../pdfVerify'
 
 const MAX_TOKEN_ID_TO_CHECK = 50
 
@@ -10,6 +13,11 @@ function VerifierPage() {
   const [searchParams] = useSearchParams()
   const [inputValue, setInputValue] = useState('')
   const [searchAddress, setSearchAddress] = useState('')
+
+  const [pdfFile, setPdfFile] = useState(null)
+  const [pdfResult, setPdfResult] = useState(null)
+  const [pdfChecking, setPdfChecking] = useState(false)
+  const [pdfError, setPdfError] = useState('')
 
   useEffect(() => {
     const fromUrl = searchParams.get('address')
@@ -66,6 +74,34 @@ function VerifierPage() {
     window.open(url, '_blank')
   }
 
+  async function handlePdfCheck(e) {
+    e.preventDefault()
+    if (!pdfFile) return
+
+    setPdfChecking(true)
+    setPdfError('')
+    setPdfResult(null)
+
+    try {
+      const { tokenId } = await parseCertPDF(pdfFile)
+
+      const onChainCert = await readContract(config, {
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: 'getCertificate',
+        args: [BigInt(tokenId)],
+      })
+
+      const result = await verifyCertPDF(pdfFile, onChainCert)
+      setPdfResult({ ...result, cert: onChainCert })
+    } catch (err) {
+      console.error(err)
+      setPdfError(err.message || 'Could not verify this PDF.')
+    } finally {
+      setPdfChecking(false)
+    }
+  }
+
   return (
     <Layout showWallet={false}>
       <div className="max-w-2xl mx-auto" style={{ color: 'var(--text)' }}>
@@ -90,6 +126,48 @@ function VerifierPage() {
               Verify
             </button>
           </form>
+        </div>
+
+        <div className="card p-6 mb-6">
+          <h2 className="font-display text-xl font-bold mb-2">Or Upload a Certificate PDF</h2>
+          <p className="text-sm text-muted mb-4">
+            Upload a SmartCert PDF to check whether it matches the blockchain record exactly.
+          </p>
+          <form onSubmit={handlePdfCheck} className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => setPdfFile(e.target.files[0])}
+              className="flex-1 input-field px-3 py-2 text-sm"
+            />
+            <button
+              type="submit"
+              disabled={!pdfFile || pdfChecking}
+              className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 disabled:opacity-50"
+            >
+              {pdfChecking ? 'Checking...' : 'Check PDF'}
+            </button>
+          </form>
+
+          {pdfError && (
+            <p className="mt-3 text-sm" style={{ color: '#f87171' }}>{pdfError}</p>
+          )}
+
+          {pdfResult && (
+            <div
+              className="mt-4 p-4 rounded"
+              style={{
+                border: `1px solid ${pdfResult.isMatch ? '#22c55e' : '#ef4444'}`,
+                color: pdfResult.isMatch ? '#4ade80' : '#f87171',
+              }}
+            >
+              {pdfResult.isMatch ? (
+                <>✅ VERIFIED — this PDF matches Token #{pdfResult.tokenId} exactly.</>
+              ) : (
+                <>❌ TAMPERED / INVALID — this PDF's contents do not match the blockchain record for Token #{pdfResult.tokenId}.</>
+              )}
+            </div>
+          )}
         </div>
 
         {hasSearched && !isValidAddress && (
