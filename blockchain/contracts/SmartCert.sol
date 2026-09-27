@@ -106,6 +106,10 @@ contract SmartCert is ERC721URIStorage, Ownable, IERC5192 {
         return certificates[tokenId];
     }
 
+    function totalIssued() external view returns (uint256) {
+        return _nextTokenId - 1;
+    }
+
     // ---------- ERC-5192: every token is permanently locked ----------
 
     function locked(uint256 tokenId) external view override returns (bool) {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAccount, useReadContracts } from 'wagmi'
+import { useAccount, useReadContracts, useReadContract } from 'wagmi'
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from './contract'
 
 const MAX_TOKEN_ID_TO_CHECK = 50 // adjust upward later if you issue more certificates
@@ -7,6 +7,12 @@ const MAX_TOKEN_ID_TO_CHECK = 50 // adjust upward later if you issue more certif
 function StudentPortal() {
   const { address } = useAccount()
   const [copied, setCopied] = useState(false)
+
+  const { data: totalIssued } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'totalIssued',
+  })
 
   function copyAddress() {
     navigator.clipboard.writeText(address)
@@ -57,6 +63,12 @@ function StudentPortal() {
 
   return (
     <div className="max-w-2xl mx-auto mt-6 bg-white p-6 rounded-lg shadow-md">
+      {totalIssued !== undefined && (
+        <p className="text-center text-sm text-gray-500 mb-4">
+          🎓 <span className="font-semibold">{totalIssued.toString()}</span> certificates issued so far on SmartCert
+        </p>
+      )}
+
       {address && (
         <div className="mb-6 pb-6 border-b flex flex-col sm:flex-row items-center gap-6">
           <div className="text-center">
