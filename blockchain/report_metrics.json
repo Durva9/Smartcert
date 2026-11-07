@@ -1,0 +1,59 @@
+{
+  "contract": "SmartCert (ERC-721 + ERC-5192 + IPFS)",
+  "solidityVersion": "0.8.28",
+  "evmVersion": "cancun",
+  "compilerOptimizer": "200 runs",
+  "operationsGas": {
+    "deployment": 1849299,
+    "singleIssue": 376768,
+    "revocation": 49616,
+    "verificationOnChain": 0
+  },
+  "batchScaling": [
+    {
+      "batchSize": 1,
+      "totalGas": 247365,
+      "gasPerCert": 247365
+    },
+    {
+      "batchSize": 5,
+      "totalGas": 1002804,
+      "gasPerCert": 200561
+    },
+    {
+      "batchSize": 10,
+      "totalGas": 1968602,
+      "gasPerCert": 196860
+    },
+    {
+      "batchSize": 20,
+      "totalGas": 3900354,
+      "gasPerCert": 195018
+    },
+    {
+      "batchSize": 30,
+      "totalGas": 5832220,
+      "gasPerCert": 194407
+    },
+    {
+      "batchSize": 50,
+      "totalGas": 9696380,
+      "gasPerCert": 193928
+    },
+    {
+      "batchSize": 70,
+      "totalGas": 13561011,
+      "gasPerCert": 193729
+    }
+  ],
+  "storageComparison": {
+    "onChainFullPayloadBytes": 245760,
+    "smartCertHybridPayloadBytes": 46,
+    "storageReductionPercent": 99.98
+  },
+  "latencyComparisonMs": {
+    "smartCertQRVerification": 850,
+    "centralizedUniversityPortal": 3200,
+    "traditionalManualVerificationDays": 7
+  }
+}
